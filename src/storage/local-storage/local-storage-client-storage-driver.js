@@ -25,11 +25,13 @@ export default class LocalStorageClientStorageDriver {
    */
   add(key, value) {
     return new Promise((resolve, reject) => {
-      if (localStorage[key] === undefined) {
+      if (localStorage.getItem(key) === undefined) {
         try {
           const savedValue = LocalStorageClientStorageDriver.localStorageValueFormatter(value);
-          localStorage[key] = savedValue;
-          resolve(LocalStorageClientStorageDriver.localStorageValueParser(localStorage[key]));
+          localStorage.setItem(key, savedValue);
+          resolve(
+            LocalStorageClientStorageDriver.localStorageValueParser(localStorage.getItem(key))
+          );
         } catch (e) {
           reject(e);
         }
@@ -48,8 +50,11 @@ export default class LocalStorageClientStorageDriver {
   addOrReplace(key, value) {
     return new Promise((resolve, reject) => {
       try {
-        localStorage[key] = LocalStorageClientStorageDriver.localStorageValueFormatter(value);
-        resolve(LocalStorageClientStorageDriver.localStorageValueParser(localStorage[key]));
+        localStorage.setItem(
+          key,
+          LocalStorageClientStorageDriver.localStorageValueFormatter(value)
+        );
+        resolve(LocalStorageClientStorageDriver.localStorageValueParser(localStorage.getItem(key)));
       } catch (e) {
         reject(e);
       }
@@ -64,10 +69,10 @@ export default class LocalStorageClientStorageDriver {
    */
   get(key) {
     return new Promise((resolve, reject) => {
-      if (localStorage[key] === undefined) {
+      if (localStorage.getItem(key) === undefined) {
         reject(new Error(`Localstorage "${key}" doesn't exists`));
       } else {
-        resolve(LocalStorageClientStorageDriver.localStorageValueParser(localStorage[key]));
+        resolve(LocalStorageClientStorageDriver.localStorageValueParser(localStorage.getItem(key)));
       }
     });
   }
@@ -80,7 +85,7 @@ export default class LocalStorageClientStorageDriver {
    */
   delete(key) {
     return new Promise((resolve, reject) => {
-      if (localStorage[key] === undefined) {
+      if (localStorage.getItem(key) === undefined) {
         reject(new Error(`Localstorage "${key}" doesn't exists`));
       } else {
         try {
