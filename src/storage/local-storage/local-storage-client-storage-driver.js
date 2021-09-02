@@ -25,7 +25,7 @@ export default class LocalStorageClientStorageDriver {
    */
   add(key, value) {
     return new Promise((resolve, reject) => {
-      if (localStorage.getItem(key) === undefined) {
+      if (localStorage.getItem(key) === null) {
         try {
           const savedValue = LocalStorageClientStorageDriver.localStorageValueFormatter(value);
           localStorage.setItem(key, savedValue);
@@ -69,7 +69,7 @@ export default class LocalStorageClientStorageDriver {
    */
   get(key) {
     return new Promise((resolve, reject) => {
-      if (localStorage.getItem(key) === undefined) {
+      if (localStorage.getItem(key) === null) {
         reject(new Error(`Localstorage "${key}" doesn't exists`));
       } else {
         resolve(LocalStorageClientStorageDriver.localStorageValueParser(localStorage.getItem(key)));
@@ -85,7 +85,7 @@ export default class LocalStorageClientStorageDriver {
    */
   delete(key) {
     return new Promise((resolve, reject) => {
-      if (localStorage.getItem(key) === undefined) {
+      if (localStorage.getItem(key) === null) {
         reject(new Error(`Localstorage "${key}" doesn't exists`));
       } else {
         try {
